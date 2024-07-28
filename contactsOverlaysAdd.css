@@ -1,0 +1,221 @@
+/* ANCHOR #overlayAddContact */
+
+.overlay-header-sub {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    margin-bottom: 16px;
+}
+
+.new-contact-dot {
+    background-color: var(--light-grey);
+    border: 3px solid var(--white);
+    border-radius: 70px;
+    width: 120px;
+    height: 120px;
+}
+
+.new-contact-dot img {
+    height: 64px;
+    width: 64px;
+}
+
+.new-contact-dot-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 292px;
+    left: 138px;
+    z-index: 1;
+}
+
+.new-contact-dot-desktop {
+    margin: 204px 72px 268px 83px;
+    display: none;
+}
+
+.add-contact-overlay-buttons {
+    margin-top: 32px;
+    margin-bottom: 80px;
+    align-self: center;
+}
+
+.cancel-btn {
+    color: var(--bg-color-dark-grey);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    height: 56px;
+    width: 126px;
+    border-radius: 10px;
+    display: none;
+}
+
+.cancel-btn img {
+    padding-left: 4px;
+    width: 24px;
+    height: 24px;
+}
+
+.create-contact-btn {
+    color: var(--white);
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 25.2px;
+    height: 51px;
+    width: 202px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+
+/* ANCHOR #overlayNewContactOk */
+
+.overlay-new-contact-ok-bg {
+    z-index: 999;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.overlay-new-contact-ok-content {
+    background-color: var(--bg-color-dark-grey);
+    border-radius: 20px;
+    color: var(--white);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: center;
+    padding: 25px;    
+    transform: translateY(650%); /* Initial position, before sliding in */
+}
+
+@keyframes overlayNewContactOkSlideIn { /* Keyframe animation for sliding in */
+    from {
+        transform: translateY(650%);
+    } to {
+        transform: translateY(200%);
+    }
+}
+
+@keyframes overlayNewContactOkSlideOut { /* Keyframe animation for sliding out */
+    from {
+        transform: translateY(200%);
+    } to {
+        transform: translateY(650%);
+    }
+}
+
+#overlayNewContactOk.overlay-slide-in .overlay-new-contact-ok-content { /* Active state for sliding in */
+    animation: overlayNewContactOkSlideIn 0.5s ease-in-out forwards;
+}
+
+#overlayNewContactOk.overlay-slide-out .overlay-new-contact-ok-content { /* Active state for sliding out */
+    animation: overlayNewContactOkSlideOut 0.5s ease-in-out forwards;
+}
+
+
+/* ANCHOR max 450px Responsiveness */
+
+@media screen and (max-width: 450px) {
+
+    .overlay-header-sub {
+        display: none;
+    }
+
+    .new-contact-dot {
+        width: 90px;
+        height: 90px;
+    }
+
+    .new-contact-dot-mobile {
+        top: 140px;
+        left: 105px;
+    }
+
+    .new-contact-dot img {
+        height: 56px;
+        width: 56px;
+    }
+
+    .add-contact-overlay-buttons {
+        margin-top: 5px;
+        margin-bottom: 15px;
+    }
+
+}
+
+
+/* ANCHOR min 1300px Responsiveness */
+
+@media screen and (min-width: 1300px){
+
+    /* ANCHOR #overlayAddContact */
+
+    .new-contact-dot-mobile {
+        display: none;
+    }
+    
+    .new-contact-dot-desktop {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .add-contact-overlay-buttons {
+        display: flex;
+        gap: 24px;
+        margin-top: 48px;
+        margin-bottom: 135px;
+    }
+
+    .cancel-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .create-contact-btn {
+        height: 57px;
+    }
+
+    
+    /* ANCHOR #overlayNewContactOk */
+
+    .overlay-new-contact-ok-bg {
+        align-items: end;
+        margin-bottom: 100px;
+    }
+
+    .overlay-new-contact-ok-content {
+        padding: 25px 30.5px;
+        transform: translateX(650%); /* Initial position, before sliding in */
+    }
+    
+    @keyframes overlayNewContactOkSlideIn { /* Keyframe animation for sliding in */
+        from {
+            transform: translateX(650%);
+        } to {
+            transform: translateX(50%);
+        }
+    }
+    
+    @keyframes overlayNewContactOkSlideOut { /* Keyframe animation for sliding out */
+        from {
+            transform: translateX(50%);
+        } to {
+            transform: translateX(650%);
+        }
+    }
+
+}

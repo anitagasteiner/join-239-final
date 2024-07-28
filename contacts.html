@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/x-icon" href="assets/img/join-logo.svg">
+
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="contacts.css">
+    <link rel="stylesheet" href="contactsContactList.css">
+    <link rel="stylesheet" href="contactsOverlays.css">
+    <link rel="stylesheet" href="contactsOverlaysAdd.css">
+    <link rel="stylesheet" href="contactsOverlaysEdit.css">
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="footer.css">
+
+    <script defer type="module" src="js/firebaseLogin.js"></script>
+    <script defer src="./js/config.js"></script>
+    <script defer src="./js/contacts.js"></script>
+    <script defer src="./js/contactsAddEditRemove.js"></script>
+    <script defer src="./assets/templates/contactsTemplates.js"></script>
+
+    <meta http-equiv="ScreenOrientation" content="autoRotate:disabled">
+
+    <title>Join: Contacts</title>
+
+</head>
+
+<body onload="initContacts()">
+
+    <div class="landscape-warning">Please rotate your device to portrait mode.</div>
+
+    <header>
+        <div class="inner-header">
+            <p class="header-title hide-on-mobile">Kanban Project Management Tool</p>
+            <img src="assets/img/join-logo.svg" class="hide-on-desktop" alt="Logo">
+            <div class="flex-all-center gap-16">
+                <a class="hide-on-mobile clickable" href="help.html" a><img class="hover-scale" src="assets/img/header-help-icon.svg" alt="Link to help"></a>
+                <div class="profile-icon flex-all-center clickable" onclick="toggleMenu()">
+                    <p id="userIcon"></p>
+                    <div id="pageOverlay" class="page-overlay"></div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="contacts-main">
+
+        <div class="main-contact-list">
+
+            <div class="contact-list-top">
+                <button class="add-contact-btn-desktop btn-color clickable" onclick="showOverlayAddContact()">Add new contact <img src="./assets/img/person_add.svg" alt="Button to open add contact"></button>
+            </div>            
+
+            <div id="contactListContent" class="contact-list-content"></div>            
+
+            <div class="add-contact-btn clickable" onclick="showOverlayAddContact()">
+                <img src="./assets/img/person_add.svg" alt="Add contact">
+            </div>
+
+        </div> <!-- end .main-contact-list -->    
+        <div id="mainContacts" class="main-contacts contacts-hide-on-mobile">
+
+            <div class="contacts-content">
+
+                <img class="contact-details-arrow clickable" src="./assets/img/arrow-left-line.svg" onclick="hideContactDetailsMobile()" alt="Close contacts details">
+
+                <div class="contacts-header">
+                    <div class="contacts-header-bold">Contacts</div>
+                    <hr class="hr-contacts-desktop">
+                    <div class="contacts-header-sub">Better with a&nbsp;team</div>
+                    <hr class="hr-contacts-mobile">
+                </div>
+                    
+                <div id="contactDetailsContainer" class="contact-details-container"></div>
+
+            </div>
+
+            <div id="overlayEditDelete" class="overlay-edit-delete-bg d-none" onclick="hideOverlayEditDelete()"></div>
+
+        </div> <!-- end .main-contacts -->
+    
+    </div> <!-- end .contacts-main -->
+
+    <div id="overlayAddContact" class="d-none">
+        <div class="overlay-bg">
+            <div id="overlayContent" class="overlay-content">
+                <div class="overlay-close-btn clickable" onclick="hideOverlayAddContact()"></div>
+                <div class="overlay-header">
+                    <div class="overlay-header-content">
+                        <div><img src="./assets/img/join-logo-overlays.svg" class="overlay-logo" alt="Overlay logo"></div>
+                        <div class="overlay-header-bold">Add contact</div>
+                        <div class="overlay-header-sub">Tasks are better with a team!</div>
+                        <hr class="hr-contacts-overlays">
+                    </div>
+                    <div class="new-contact-dot new-contact-dot-mobile">
+                        <img src="./assets/img/person.svg" alt="Add person logo">
+                    </div>
+                </div>
+                <div class="overlay-form-bg">
+                    <div class="new-contact-dot new-contact-dot-desktop">
+                        <img src="./assets/img/person.svg" alt="New contact Person logo">
+                    </div>
+                    <form class="overlay-form" onsubmit="createNewContactArray(); return false">
+                        <input id="addContactInputName" class="input-name" placeholder="Name" required type="text" pattern="[A-Za-zÄäÖöÜüß\-]{2,} [A-Za-zÄäÖöÜüß\-]{2,}" title="Please insert your first and last name (at least two characters each).">
+                        <input id="addContactInputMail" class="input-mail" placeholder="Email" required type="email">
+                        <input id="addContactInputPhone" class="input-phone" placeholder="Phone" type="text" pattern="\+[0-9]{1,3} [0-9]{4,14}" title="Please insert your phone number using the following format: +123 1234567890." value="+">
+                        <div class="add-contact-overlay-buttons">
+                            <button type="submit" novalidate class="cancel-btn btn-white clickable" onclick="hideOverlayAddContact()" alt="Cancel">Cancel <img class="cancel-btn-img-dark" src="./assets/img/cancel-x-dark.svg" alt="Cancel"><img class="cancel-btn-img-blue" src="./assets/img/cancel_x_blue.svg" alt="Cancel"></button>
+                            <button type="submit" class="create-contact-btn btn-color clickable">Create Contact<img src="./assets/img/check.svg" alt="Create contact"></button>
+                        </div>                        
+                    </form>
+                </div>                
+            </div>
+        </div>
+    </div>
+
+    <div id="overlayNewContactOk" class="d-none">
+        <div class="overlay-new-contact-ok-bg">
+            <div class="overlay-new-contact-ok-content">Contact successfully created</div>
+        </div>            
+    </div>
+
+    <div id="overlayEditContact" class="d-none">
+        <div class="overlay-bg">
+            <div class="overlay-content">
+                <div class="overlay-close-btn clickable" onclick="hideOverlayEditContact()"></div>
+                <div class="overlay-header">  
+                    <div class="overlay-header-content">
+                        <img class="overlay-logo" src="./assets/img/join-logo-overlays.svg" alt="Logo">
+                        <div class="overlay-header-bold">Edit contact</div>
+                        <hr class="hr-contacts-overlays">
+                    </div>                    
+                    <div id="editContactDotMobile"></div>
+                </div>
+                <div class="overlay-form-bg">
+                    <div id="editContactDotDesktop"></div>
+                    <form id="editContactForm" class="overlay-form">
+                        <input id="editContactInputName" class="input-name" placeholder="Name" required type="text" pattern="[A-Za-zÄäÖöÜüß\-]{2,} [A-Za-zÄäÖöÜüß\-]{2,}" title="Please insert your first and last name (at least two characters each).">
+                        <input id="editContactInputMail" class="input-mail" placeholder="Email" required type="email">
+                        <input id="editContactInputPhone" class="input-phone" placeholder="Phone" type="text" pattern="\+[0-9]{1,3} [0-9]{4,14}" title="Please insert your phone number using the following format: +123 1234567890.">
+                        <div class="edit-contact-overlay-buttons">
+                            <button id="editContactDeleteBtn" class="delete-btn btn-white clickable disable-on-load">Delete</button>
+                            <button class="save-btn btn-color clickable disable-on-load">Save<img src="./assets/img/check.svg" alt="Save button"></button>
+                        </div>                        
+                    </form>
+                </div>                
+            </div>
+        </div>
+    </div>
+
+    <!--ANCHOR - overlay-animation-->
+    <div class="menu-overlay" id="userMenu">
+        <div class="overlay-menu-links hide-on-desktop">
+            <a href="help.html" target="_blank" rel="noopener noreferrer">Help</a>
+        </div>
+        <div class="overlay-menu-links">
+            <a href="legalNotice.html" target="_blank" rel="noopener noreferrer">Legal Notice</a>
+        </div>
+        <div class="overlay-menu-links">
+            <a href="privacyPolicy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+        </div>
+        <div class="overlay-menu-links">
+            <a onclick="logOut(); handleGuestUser(false)" href="index.html" rel="noopener noreferrer">Log out</a>
+        </div>
+        
+    </div>
+
+    <footer class="mobile-footer">
+        <img class="logo hide-on-mobile" src="assets/img/join-logo-big.svg" alt="Logo">
+
+        <div class="menu-container">
+            <a href="summary.html" class="footer-menu">
+                <img src="./assets/img/menu_icon_summary.svg" alt="Link to summary">
+                <p>Summary</p>
+            </a>
+            <a href="addTask.html"  class="footer-menu">
+                <img src="./assets/img/menu_icon_add_task.svg" alt="Link to add task">
+                <p>Add Task</p>
+            </a>
+            <a href="board.html" class="footer-menu">
+                <img src="./assets/img/menu_icon_board.svg" alt="Link to board">
+                <p>Board</p>
+            </a>            
+            <a href="contacts.html" class="footer-menu mobile-menu-selected">
+                <img src="./assets/img/menu_icon_contacts.svg" alt="Link to contacts">
+                <p>Contacts</p>
+            </a>
+        </div>
+
+        <div class="policy-container hide-on-mobile">
+            <a class="clickable" href="privacyPolicy.html" target="_blank">Privacy Policy</a>
+            <a class="clickable" href="legalNotice.html" target="_blank">Legal Notice</a>
+        </div>
+    </footer>
+    <div class="contact-deleted" id="contactDeleted"><p>Contact Deleted!</p></div>
+</body>
+
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join -Board</title>
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="board.css">
+    <link rel="stylesheet" href="footer.css">
+    <link rel="stylesheet" href="header.css">
+    <link rel="icon" type="image/x-icon" href="assets/img/join-logo.svg">
+    <script defer type="module" src="js/firebaseLogin.js"></script>
+    <script defer src="js/config.js"></script>
+    <script defer src="assets/templates/boardTemplates.js"></script>
+    <script defer src="js/subtasks.js"></script>
+    <script defer src="js/addTask.js"></script>
+    <script defer src="js/board.js"></script>
+    <script defer src="js/contactsAddEditRemove.js"></script>
+    <script defer src="js/contacts.js"></script>
+    <script defer src="js/editTask.js"></script>
+    <script defer src="js/taskSearch.js"></script>
+    <script defer src="js/addTaskAssign.js"></script>
+    <script defer src="js/dragAndDrop.js"></script>
+</head>
+
+<body onload="initBoard()">
+
+    <div class="landscape-warning">Please rotate your device to portrait mode.</div>
+
+    <header>
+        <div class="inner-header">
+            <p class="hide-on-mobile header-title">Kanban Project Management Tool</p>
+            <img src="assets/img/join-logo.svg" class="hide-on-desktop" alt="Logo">
+            <div class="flex-all-center gap-16">
+                <a class="hide-on-mobile clickable" href="help.html" a><img class="hover-scale"
+                        src="assets/img/header-help-icon.svg" alt="Link to help"></a>
+                        <div class="profile-icon flex-all-center clickable" onclick="toggleMenu()">
+                            <p id="userIcon"></p>
+                        <div id="pageOverlay" class="page-overlay"></div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- ANCHOR Task overlay -->
+    <section id="taskOverlay" class="overlay-bg">
+
+    </section>
+
+
+    <!-- ANCHOR add Task overlay -->
+    <section id="addTaskOverlay" class="overlay-bg">
+        <div onclick="closeSelectContacts(), closeSelectCats(), stopP(event)" class="add-task-container">
+            <div class="add-Task-header">
+                <h1 class="add-task-headline">Add Task</h1>
+                <img id="closeAddBtn" class="clickable close-add-btn" src="assets/img/close-black.svg" alt="close Task">
+            </div>
+            <div>
+                <div class="overlay-form">
+                    <div class="form-half-side">
+                        <div class="input-group">
+                            <label class="font-20" for="titleInput">Title<span class="color-red">*</span></label>
+                            <input onkeyup="validateTitle()" id="titleInput" class="enter-input font-20" placeholder="Enter a title" type="text"
+                                name="Title" id="titleInput" required>
+                        </div>
+                        <span id="titleWarningMessage" class="warning-message-field-required d-none">Please enter a title</span>
+                        <div class="input-group">
+                            <label class="font-20" for="descriptionInput">Description</label>
+                            <textarea class="enter-description-input font-20" placeholder="Enter a description"
+                                name="Description" id="descriptionInput"></textarea>
+                        </div>
+                        <div class="input-group">
+                            <label class="font-20" for="selectInput">Assigned to</label>
+                            <div id="selectInput" onclick="openSelectContacts(); stopP(event)"
+                                class="enter-input outer-input select-rel">
+                                <input onkeyup="filterContacts(event)" id="innerSelectInput" class="inner-input font-20"
+                                    placeholder="Select contacts to assign" type="text" name="select contacts">
+                                <div id="selectFieldBtn" class="select-image inner-input-img clickable"></div>
+                                <div id="selectContactsList" class="contact-select-list d-none"></div>
+                            </div>
+                            <div class="pre-select-badges" id="preSelectedContainer"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-divider"></div>
+
+                    <div class="form-half-side">
+                        <div class="input-group">
+                            <label class="font-20" for="dateInput">Due date<span class="color-red">*</span></label>
+                            <input id="dateInput" class="enter-input font-20 date-bg-img" placeholder="dd/mm/yyyy" type="text"
+                                onfocus="(this.type='date')" onblur="(this.type='text'), validateDate(); this.placeholder='dd/mm/yyyy';"
+                                required>
+                        </div>
+                        <span id="dateWarningMessage" class="warning-message-field-required d-none">Please select a date</span>
+                        <div class="input-group">
+                            <label class="">Prio</label>
+                            <div class="prio-container">
+                                <div onclick="setPrioBtn('prioUrgent', 'urgent-selected', './assets/img/priority-urgent-white.svg', 'urgent')"
+                                    id="prioUrgent" class="priority-btn clickable">
+                                    <span>Urgent</span>
+                                    <img src="./assets/img/priority-urgent.svg" alt="Urgent priority task">
+                                </div>
+                                <div onclick="setPrioBtn('prioMedium', 'medium-selected', './assets/img/priority-medium-white.svg', 'medium')"
+                                    id="prioMedium" class="medium-selected priority-btn clickable">
+                                    <span>Medium</span>
+                                    <img src="./assets/img/priority-medium-white.svg" alt="Medium priority task">
+                                </div>
+                                <div onclick="setPrioBtn('prioLow', 'low-selected', './assets/img/priority-low-white.svg', 'low')"
+                                    id="prioLow" class="priority-btn clickable">
+                                    <span>Low</span>
+                                    <img src="./assets/img/priority-low.svg" alt="Low priority task">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="font-20" for="selectCategory">Category<span class="color-red">*</span></label>
+                            <div id="selectCategory" onclick="openSelectCat(), stopP(event)" class="enter-input outer-input select-rel clickable">
+                                <div id="catSelectValue" data-tasktype="">Select task Category</div>
+                                <div id="selectFieldBtnCat" class="select-image inner-input-img clickable"></div>
+                                <div id="selectCatList" class="contact-select-list d-none">
+                                    <div class="contacts-select-list-row" onclick="preSetTaskType('Technical Task'), stopP(event), validateCategory()">Technical Task</div>
+                                    <div class="contacts-select-list-row" onclick="preSetTaskType('User Story'), stopP(event), validateCategory()">User Story</div>
+                                </div>
+                            </div>
+                            <span id="categoryWarningMessage" class="warning-message-field-required d-none">Please choose a category</span>
+                        </div>
+                        <div class="input-group">
+                            <label class="font-20" for="selectInput">Subtasks</label>
+                            <div id="subtaskInputFrame" class="enter-input outer-input">
+                                <input onkeypress="stopP(event)" class="inner-input font-16" placeholder="Add new subtask" type="text"
+                                    name="add subtasks" id="subtaskInput">
+                                <div id="subBtnContainer" class="sub-btn-container">
+                                    <div id="addSubtaskBtn" class="sub-plus-image inner-input-img clickable"></div>
+                                </div>
+                            </div>
+                            <div class="subtask-ul" id="subtaskEditList"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="add-overlay-footer">
+                    <div class="hint-container">
+                        <p><span class="color-red">*</span>This field is required</p>
+                    </div>
+                    <div class="form-btn-container">
+                        <button id="cancelAdd" class="cancel-btn btn-white clickable disable-on-load">
+                            <span>Cancel</span><img class="cancel-btn-img-dark" src="./assets/img/cancel-x-dark.svg" alt="Cancel button create task">
+                            <img class="cancel-btn-img-blue" src="./assets/img/cancel_x_blue.svg" alt="Cancel button">
+                        </button>
+                        <button onclick="validateTaskForm(event, initBoard); return false" class="board-btn-dark board-create-btn clickable disable-on-load">
+                            <span>Create Task</span><img src="assets/img/check.svg" alt="Create task Button">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ANCHOR board -->
+    <section class="board">
+        <div class="board-headline">
+            <h1>Board</h1>
+            <button id="boardAddBtn" class="board-add-btn board-btn-dark clickable"><span
+                    class="clickable hide-under-1400p">Add task</span><img src="assets/img/board-add-task-plus.svg"
+                    alt="Add task Button"></button>
+            <div class="search-box" id="taskSearch">
+                <input id="taskSearchInput" placeholder="Find Task">
+                <img class="clickable" src="assets/img/search-icon.svg" alt="Search tasks">
+            </div>
+        </div>
+
+        <div id="noTaskFound" class="flex-all-center search-hint-container d-none">
+            <p>No Tasks with this title or description found</p>
+        </div>
+
+
+
+        <!-- ANCHOR in to do -->
+        <div class="board-columns">
+            <div class="column-with-col-header" >
+                <div class="board-column-title">
+                    <h2>To do</h2>
+                    <div id="addTaskInTodo" class="clickable plus-icon"></div>
+                </div>
+                <div class="card-container" id="toDoColumn" ondrop="moveTo('toDoColumn','todo')" ondragleave="removeHighlight('toDoColumn')" ondragover="allowDrop(event); highlight('toDoColumn')">
+                    <!-- ANCHOR card -->
+                </div>
+            </div>
+
+            <!-- ANCHOR in progress -->
+            <div class="column-with-col-header">
+                <div class="board-column-title">
+                    <h2>In progress</h2>
+                    <div id="addTaskInProgress" class="clickable plus-icon"></div>
+                </div>
+                <div class="card-container" id="inProgressColumn" ondrop="moveTo('inProgressColumn','progress')" ondragleave="removeHighlight('inProgressColumn')" ondragover="allowDrop(event); highlight('inProgressColumn')">
+                    <!-- ANCHOR card -->
+                </div>
+            </div>
+
+
+            <!-- ANCHOR in feedback -->
+            <div class="column-with-col-header">
+                <div class="board-column-title">
+                    <h2>Await feedback</h2>
+                    <div id="addTaskInFeedback" class="clickable plus-icon"></div>
+                </div>
+                <div class="card-container" id="feedbackColumn" ondrop="moveTo('feedbackColumn','feedback')" ondragleave="removeHighlight('feedbackColumn')" ondragover="allowDrop(event); highlight('feedbackColumn')">
+                    <!-- ANCHOR card -->
+                </div>
+            </div>
+
+            <!-- ANCHOR done -->
+            <div class="column-with-col-header mobile-marg-btm-96">
+                <div class="board-column-title">
+                    <h2>Done</h2>
+                </div>
+                <div class="card-container" id="doneColumn" ondrop="moveTo('doneColumn','done')" ondragleave="removeHighlight('doneColumn')" ondragover="allowDrop(event); highlight('doneColumn')">
+                    <!-- ANCHOR card -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--ANCHOR - overlay-animation-->
+    <div class="menu-overlay" id="userMenu">
+        <div class="overlay-menu-links hide-on-desktop">
+            <a href="help.html" target="_blank" rel="noopener noreferrer">Help</a>
+        </div>
+        <div class="overlay-menu-links">
+            <a href="legalNotice.html" target="_blank" rel="noopener noreferrer">Legal Notice</a>
+        </div>
+        <div class="overlay-menu-links">
+            <a href="privacyPolicy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+        </div>
+        <div class="overlay-menu-links">
+            <a onclick="logOut(); handleGuestUser(false)" href="index.html" rel="noopener noreferrer">Log out</a>
+        </div>
+        
+    </div>
+
+    <footer class="mobile-footer">
+        <img class="logo hide-on-mobile" src="assets/img/join-logo-big.svg" alt="Logo">
+
+        <div class="menu-container">
+            <a href="summary.html" class="footer-menu">
+                <img src="./assets/img/menu_icon_summary.svg" alt="Link to summary">
+                <p>Summary</p>
+            </a>
+            <a href="addTask.html" class="footer-menu">
+                <img src="./assets/img/menu_icon_add_task.svg" alt="Link to add task">
+                <p>Add Task</p>
+            </a>
+            <a href="board.html" class="footer-menu mobile-menu-selected">
+                <img src="./assets/img/menu_icon_board.svg" alt="Link to board">
+                <p>Board</p>
+            </a>
+            <a href="contacts.html" class="footer-menu">
+                <img src="./assets/img/menu_icon_contacts.svg" alt="Link to Board">
+                <p>Contacts</p>
+            </a>
+        </div>
+
+        <div class="policy-container hide-on-mobile">
+            <a class="clickable" href="privacyPolicy.html" target="_blank">Privacy Policy</a>
+            <a class="clickable" href="legalNotice.html" target="_blank">Legal Notice</a>
+        </div>
+    </footer>
+    <div class="successfull-task" id="successfullAddedTask"><p>Task added to board</p></div>
+    <div class="task-edited" id="taskEdited"><p>Task updated!</p></div>
+    <div class="task-deleted" id="taskDeleted"><p>Task Deleted!</p></div>
+</body>
+
+</html>

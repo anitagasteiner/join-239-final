@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/join-logo.svg">
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="login.css">
+    <script defer type="module" src="js/firebaseSignUp.js"></script>
+    <script defer type="module" src="js/firebaseLogin.js"></script>
+    <script defer src="js/index.js"></script>
+</head>
+
+<body class="bg-add-task">
+
+    <div class="landscape-warning">Please rotate your device to portrait mode.</div>
+
+    <div id="start-page-login" class="start-page">
+        <div class="align-center">
+            <div id="logo-container">
+            <img class="login-logo" src="./assets/img/join-logo.svg" alt="Logo" id="logo">
+            
+        </div>
+            <div class="not-a-user hide-on-mobile">
+                <span>Not a Join user?</span>
+                <div onclick="openSignup()" class="small-signup-btn btn-color clickable">Sign up</div>
+            </div>
+        </div>
+        <div class="login-white-bg">
+            <div class="login-headline">
+                <span>Log in</span>
+                <div class="blue-underline"></div>
+            </div>
+            <form class="login-form">
+                <input placeholder="Email" class="email" type="email" id="email">
+                <div class="password-container" id="passwordContainer">
+                    <input placeholder="Password" class="password" type="password" id="password">
+                    <div onclick="showPassword('passwordClick','password')" id="passwordClick"
+                        class="right-password-box"></div>
+                </div>
+                <div class="d-none" id="wrongPassword">
+                <span>Wrong password Ups! Try again.</span>
+            </div>
+            </form>
+            <div  class="remember-me" onclick="handleCheckBoxRememberMe()">
+                <img class="clickable" id="rememberMe" src="./assets/img/checkbox.svg" alt="Remember me checkbox">
+                <span>Remember me</span>
+            </div>
+            <div class="login-btns">
+                <button class="login-btn btn-color clickable" id="loginbtn" onclick="validateLogin()">Log in</button>
+                <button class="guest-login btn-white clickable" onclick="openGuestAccess()">Guest Log in</button>
+            </div>
+        </div>
+        <div class="not-a-user hide-on-desktop">
+            <span>Not a Join user?</span>
+            <div onclick="openSignup()" class="small-signup-btn btn-color clickable">Sign up</div>
+        </div>
+        <div class="login-links-align">
+            <div onclick="openPrivacyPolicy()" class="login-links clickable">Privacy
+                Policy</div>
+            <div onclick="openLegalNotice()" class="login-links clickable">Legal Notice</div>
+        </div>
+    </div>
+    <div id="signup-startpage" class="d-none">
+        <div class="align-center">
+            <img class="join-logo-login-signup" src="./assets/img/join-logo.svg" alt="Logo">
+        </div>
+        <div class="login-white-bg-signup">
+            <div class="arrow-align">
+                <img onclick="backToLogin()" class="login-arrow-back clickable" src="./assets/img/arrow-left-line.svg"
+                    alt="Back to login">
+                <div class="signup-headline clickable">
+                    <span>Sign up</span>
+                    <div class="blue-underline"></div>
+                </div>
+            </div>
+            <form onsubmit="return register()" class="login-form">
+                <input placeholder="Name" class="name-input" type="text" id="name" required>
+                <span class="password-error-message d-none" id="nameWarning">Please enter your name</span>
+                <input placeholder="Email" class="email" type="email" id="e-mail" required>
+                <span class="password-error-message d-none" id="emailWarning">Please enter your email</span>
+                <div class="password-container" id="redBorderPassword">
+                    <input placeholder="Password" class="password" type="password" id="passwordForm" required>
+                    <div onclick="showPassword('passwordClick1','passwordForm')" id="passwordClick1"
+                        class="right-password-box"></div>
+                </div>
+                <span class="password-error-message d-none" id="noPasswordWarning">Please enter a 6 digit password</span>
+                <div class="password-container" id="passwordWarning">
+                    <input placeholder="Password" class="password" type="password" id="confirmPassword" required>
+                    <div onclick="showPassword('passwordClick2','confirmPassword')" id="passwordClick2"
+                        class="right-password-box"></div>
+                </div>
+                <span class="password-error-message d-none" id="pwError">Oops! Your passwords don't match.</span>
+                <div class="accept-terms">
+                    <img id="privacyCheckBox" onclick="handleCheckBoxPrivacyPolicy()" src="./assets/img/checkbox.svg"
+                        alt="Accept Privacy checkbox">
+                    <span class="color-grey">I accept the <div class="highlighted-text no-decoration"
+                            onclick="openPrivacyPolicy()">Privacy
+                            Policy</div></span>
+                </div>
+                <span class="privacy-error-message d-none clickable" id="privacyError">Please accept the privacy policy</span>
+                <button onclick="validateForm(event)" type="submit" class="sign-up-btn btn-color margin-bottom32px clickable" id="signupBtn">Sign up</button>
+            </form>
+        </div>
+        <div class="login-links-align margin-top108">
+            <div onclick="openPrivacyPolicy()" class="login-links clickable">Privacy
+                policy</div>
+            <div onclick="openLegalNotice()" class="login-links clickable">Legal Notice</div>
+        </div>
+    </div>
+    <div class="successfully-signup" id="successfullSignup">
+        <span>You signed up successfully</span>
+    </div>
+</body>
+</html>

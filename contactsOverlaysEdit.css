@@ -1,0 +1,203 @@
+/* ANCHOR #overlayEditDelete */
+
+.overlay-edit-delete-bg {
+    z-index: 999;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+}
+
+.overlay-edit-delete-content {
+    color: var(--bg-color-dark-grey);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19.2px;
+    background-color: var(--white);
+    padding: 10px;
+    border-radius: 20px 20px 0 20px;
+    box-shadow: 0 4px 4px var(--shadow-light-grey-25);
+    position: fixed;
+    right: 8px;
+    bottom: 90px;
+    transform: translateX(150%); /* Initial position, before sliding in */
+}
+
+.overlay-edit-delete-table td:first-child {
+    padding: 8px 0 8px 8px;
+}
+
+.overlay-edit-delete-table td:last-child {
+    padding: 8px;
+}
+
+.overlay-edit-img {
+    width: 24px;
+    height: 24px;
+}
+
+.overlay-delete-img {
+    width: 24px;
+    height: 24px;
+}
+
+@keyframes overlayEditDeleteSlideIn { /* Keyframe animation for sliding in */
+    from {
+        transform: translateX(150%);
+    } to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes overlayEditDeleteSlideOut { /* Keyframe animation for sliding out */
+    from {
+        transform: translateX(0);
+    } to {
+        transform: translateX(150%);
+    }
+}
+
+#overlayEditDelete.overlay-slide-in .overlay-edit-delete-content { /* Active state for sliding in */
+    animation: overlayEditDeleteSlideIn 0.5s ease-in-out forwards;
+}
+
+#overlayEditDelete.overlay-slide-out .overlay-edit-delete-content { /* Active state for sliding out */
+    animation: overlayEditDeleteSlideOut 0.5s ease-in-out forwards;
+}
+
+
+/* ANCHOR #overlayEditContact */
+
+.edit-contact-dot {
+    border: 3px solid var(--white);
+    border-radius: 70px;
+    width: 120px;
+    height: 120px;
+    font-size: 47px;
+    font-weight: 500;
+    line-height: 56.4px;
+}
+
+.edit-contact-dot-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 292px;
+    left: 138px;
+    z-index: 1;
+}
+
+.edit-contact-dot-desktop {
+    margin-left: 97px;
+    margin-right: 72px;
+    display: none;
+}
+
+.edit-contact-overlay-buttons {
+    gap: 25px;
+    margin-bottom: 80px;
+    margin-top: 32px;
+    display: flex;
+    justify-content: center;
+}
+
+.delete-btn {
+    color: var(--bg-color-dark-grey);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    height: 51px;
+    width: 82px;
+    border-radius: 10px;
+}
+
+.save-btn {
+    color: var(--white);
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 25.2px;
+    height: 51px;
+    width: 99px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+
+/* ANCHOR max 450px Responsiveness */
+
+@media screen and (max-width: 450px) {
+
+    .edit-contact-dot {
+        width: 90px;
+        height: 90px;
+        font-size: 39px;
+    }
+
+    .edit-contact-dot-mobile {
+        top: 140px;
+        left: 105px;
+    }
+
+    .edit-contact-overlay-buttons {
+        margin-top: 5px;
+        margin-bottom: 15px;
+    }
+
+}
+
+
+/* ANCHOR min 1200px Responsiveness */
+
+@media only screen and (min-width: 1200px) {
+
+    /* ANCHOR #overlayEditDelete */
+
+    .overlay-edit-delete-content {
+        bottom: 10px;
+    }
+
+}
+
+
+/* ANCHOR min 1300px Responsiveness */
+
+@media screen and (min-width: 1300px){
+    
+    /* ANCHOR #overlayEditContact */
+
+    .edit-contact-dot-mobile {
+        display: none;
+    }
+
+    .edit-contact-dot-desktop {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .delete-btn {
+        font-size: 21px;
+        line-height: 25.2px;
+        height: 55px;
+        width: 113px;
+        border-radius: 8px;
+    }
+
+    .save-btn {
+        height: 57px;
+        width: 111px;
+    }
+    
+
+    /* ANCHOR #overlayEditDelete */
+
+    .overlay-edit-delete-content {
+        display: none;
+    }
+
+}

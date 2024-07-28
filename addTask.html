@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Tasks</title>
+    <link rel="stylesheet" href="addTask.css">
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="footer.css">
+    <link rel="icon" type="image/x-icon" href="assets/img/join-logo.svg">
+    <script defer type="module" src="js/firebaseLogin.js"></script>
+    <script defer src="js/config.js"></script>
+    <script defer src="js/subtasks.js"></script>
+    <script defer src="js/addTaskAssign.js"></script>
+    <script defer src="js/addTask.js"></script>
+    <script defer src="js/subtasks.js"></script>
+    <script defer src="assets/templates/boardTemplates.js"></script>
+</head>
+
+<body class="bg-add-task" onload="initAddTask()" onclick="closeSelectContacts(), closeSelectCats(), stopP(event)">
+
+    <div class="landscape-warning">Please rotate your device to portrait mode.</div>
+
+    <header>
+        <div class="inner-header">
+            <p class="header-title hide-on-mobile">Kanban Project Management Tool</p>
+            <img src="assets/img/join-logo.svg" class="hide-on-desktop" alt="Logo">
+            <div class="flex-all-center gap-16">
+                <a class="hide-on-mobile clickable" href="help.html" a><img class="hover-scale"
+                        src="assets/img/header-help-icon.svg" alt="help"></a>
+                <div class="profile-icon flex-all-center clickable" onclick="toggleMenu()">
+                    <p id="userIcon"></p>
+                    <div id="pageOverlay" class="page-overlay"></div>
+                </div>
+            </div>
+    </header>
+    <div class="padding-left-right-16px margin-bottom-96px bg-add-task add-task-main-container">
+        <h1 class="add-task-headline">Add Task</h1>
+        <div class="add-task-desktop" class="width-396px" action="submit">
+            <div class="add-task-desktop-gap">
+                <p class="margin-8px font-20px">Title<span class="color-red">*</span></p>
+                <input onkeyup="validateTitle()" class="enter-title-input" placeholder="Enter a title" type="text"
+                    name="Title" id="titleInput" required>
+                <span id="titleWarningMessage" class="warning-message-field-required d-none">Please enter a title</span>
+                <p class="margin-8px font-20px margintop-32px">Description</p>
+                <textarea class="enter-description-input" placeholder="Enter a description" name="Description"
+                    id="descriptionInput"></textarea>
+                <div class="input-group">
+                    <label class="font-20" for="selectInput">Assigned to</label>
+                    <div id="selectInput" onclick="openSelectContacts(); stopP(event)"
+                        class="enter-input outer-input select-rel">
+                        <input onkeyup="filterContacts(event)" id="innerSelectInput" class="inner-input font-20"
+                            placeholder="Select contacts to assign" type="text" name="select contacts">
+                        <div id="selectFieldBtn" class="select-image inner-input-img clickable"></div>
+                        <div id="selectContactsList" class="contact-select-list d-none"></div>
+                    </div>
+                    <div class="pre-select-badges" id="preSelectedContainer"></div>
+                </div>
+                <div class="hint-container hide-on-mobile2">
+                    <p><span class="color-red">*</span>This field is required</p>
+                </div>
+            </div>
+            <div class="add-task-desktop-border"></div>
+            <div class="right-section-addTask">
+                <p class="margin-8px font-20px">Due date <span class="color-red">*</span></p>
+                <input class="date-input" type="text" placeholder="dd/mm/yyyy" id="dateInput"
+                    onfocus="(this.type='date')"
+                    onblur="(this.type='text'), validateDate(); this.placeholder='dd/mm/yyyy';">
+                <span id="dateWarningMessage" class="warning-message-field-required d-none">Please select a date</span>
+                <div class="height-88px">
+                    <p class="margin-8px font-20px margintop-32px">Prio</p>
+                    <div class="justify-space-between gap16px">
+                        <div class="priority-section clickable"
+                            onclick="setPrioBtn('prioUrgent', 'urgent-selected', './assets/img/priority-urgent-white.svg', 'urgent')"
+                            id="prioUrgent">
+                            <span>Urgent</span>
+                            <img src="./assets/img/priority-urgent.svg" alt="Urgent priority task">
+                        </div>
+                        <div class="medium-selected priority-section clickable"
+                            onclick="setPrioBtn('prioMedium', 'medium-selected', './assets/img/priority-medium-white.svg', 'medium')"
+                            id="prioMedium">
+                            <span>Medium</span>
+                            <img src="./assets/img/priority-medium-white.svg" alt="Medium priority task">
+                        </div>
+                        <div class="priority-section clickable"
+                            onclick="setPrioBtn('prioLow', 'low-selected', './assets/img/priority-low-white.svg', 'low')"
+                            id="prioLow">
+                            <Span>Low</Span>
+                            <img src="./assets/img/priority-low.svg" alt="Low priority task">
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group margintop-32px">
+                    <label class="font-20" for="selectCategory">Category<span class="color-red">*</span></label>
+                    <div id="selectCategory" onclick="openSelectCat(), stopP(event)"
+                        class="enter-input outer-input select-rel clickable">
+                        <div id="catSelectValue" data-tasktype="">Select task Category</div>
+                        <div id="selectFieldBtnCat" class="select-image inner-input-img clickable"></div>
+                        <div id="selectCatList" class="contact-select-list d-none">
+                            <div class="contacts-select-list-row"
+                                onclick="preSetTaskType('Technical Task'), stopP(event), validateCategory()">Technical
+                                Task</div>
+                            <div class="contacts-select-list-row"
+                                onclick="preSetTaskType('User Story'), stopP(event), validateCategory()">User Story
+                            </div>
+                        </div>
+                    </div>
+                    <span id="categoryWarningMessage" class="warning-message-field-required d-none">Please choose a
+                        category</span>
+                </div>
+                <div class="input-group margintop-32px">
+                    <label class="font-20" for="selectInput">Subtasks</label>
+                    <div id="subtaskInputFrame" class="enter-input outer-input">
+                        <input class="inner-input font-16" placeholder="Add new subtask" type="text" name="add subtasks"
+                            id="subtaskInput">
+                        <div id="subBtnContainer" class="sub-btn-container">
+                            <div id="addSubtaskBtn" class="sub-plus-image inner-input-img clickable"></div>
+                        </div>
+                    </div>
+                    <ul class="subtask-ul margin-top-0" id="subtaskEditList">
+                    </ul>
+                </div>
+                <div class="justify-space-between height-88px desktop-btns">
+                    <p class="d-none-desktop font16 requiered-field-p"><span class="color-red">*</span>This field is requiered</p>
+                    <div class="btns-add-task">
+                        <button onclick="clearAddTaskAndTempVariables()"
+                            class="clear-task-btn btn-white cancel-btn disable-on-load">
+                            <span>Clear</span>
+                            <img class="cancel-btn-img-dark" src="./assets/img/cancel-x-dark.svg" alt="Cancel button">
+                            <img class="cancel-btn-img-blue d-none" src="./assets/img/cancel_x_blue.svg"
+                                alt="Cancel Button">
+                        </button>
+                        <button onclick="validateTaskForm(event, redirectToBoard); return false" type="submit"
+                            class="create-task-btn btn-color disable-on-load clickable">
+                            <span>Create Task</span>
+                            <img src="./assets/img/check.svg" alt="Create task button">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-overlay" id="userMenu">
+        <div class="overlay-menu-links hide-on-desktop">
+            <a href="help.html" target="_blank" rel="noopener noreferrer">Help</a>
+        </div>
+        <div class="overlay-menu-links">
+            <a href="legalNotice.html" target="_blank" rel="noopener noreferrer">Legal Notice</a>
+        </div>
+        <div class="overlay-menu-links">
+            <a href="privacyPolicy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+        </div>
+        <div class="overlay-menu-links">
+            <a onclick="logOut(); handleGuestUser(false)" href="index.html" rel="noopener noreferrer">Log out</a>
+        </div>
+
+    </div>
+
+    <footer class="mobile-footer">
+        <img class="logo hide-on-mobile" src="assets/img/join-logo-big.svg" alt="Logo">
+
+        <div class="menu-container">
+            <a href="summary.html" class="footer-menu">
+                <img src="./assets/img/menu_icon_summary.svg" alt="Link to summary">
+                <p>Summary</p>
+            </a>
+            <a href="addTask.html" class="footer-menu mobile-menu-selected">
+                <img src="./assets/img/menu_icon_add_task.svg" alt="Link to add task">
+                <p>Add Task</p>
+            </a>
+            <a href="board.html" class="footer-menu">
+                <img src="./assets/img/menu_icon_board.svg" alt="Link to board">
+                <p>Board</p>
+            </a>
+            <a href="contacts.html" class="footer-menu">
+                <img src="./assets/img/menu_icon_contacts.svg" alt="Link to contacts">
+                <p>Contacts</p>
+            </a>
+        </div>
+
+        <div class="policy-container hide-on-mobile">
+            <a class="clickable" href="privacyPolicy.html" target="_blank">Privacy Policy</a>
+            <a class="clickable" href="legalNotice.html" target="_blank">Legal Notice</a>
+        </div>
+    </footer>
+    <div class="successfull-task" id="successfullAddedTask">
+        <p>Task added to board</p>
+    </div>
+</body>
+
+</html>
