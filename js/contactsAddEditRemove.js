@@ -1,7 +1,12 @@
 /**
+ *  * @param {string[]} colors - This Array contains the possible colors for the contact/user dots.
+ */
+let colors = ['orange', 'purple', 'purple-dark', 'blue', 'pink', 'yellow', 'mint', 'green', 'red'];
+
+
+/**
  * This class is used to create new contact arrays or to change existing contact arrays.
  */
-
 class NewContact {
     constructor(id, name, email, phone, color, initials) {
         this.id = id,

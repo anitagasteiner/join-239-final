@@ -1,9 +1,7 @@
 /**
- * @param {string[]} colors - This Array contains the possible colors for the contact/user dots.
  * @param {string[]} usedLetters - This Array contains the first letter of each contact name.
  * @param {string[]} contactListLetters - This Array contains every letter occurring in the array "usedLetters" sorted from A to Z without duplicates.
  */
-let colors = ['orange', 'purple', 'blue', 'pink', 'yellow', 'mint', 'green'];
 let usedLetters = [];
 let contactListLetters = [];
 

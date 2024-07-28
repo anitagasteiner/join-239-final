@@ -33,12 +33,14 @@
     --type-blue: rgba(0, 93, 255, 1);
     --mail-blue: rgba(0, 124, 238, 1);
     --orange: rgba(255, 122, 0, 1);
-    --purple: rgba(147, 39, 255, 1);    
+    --purple: rgba(147, 39, 255, 1);
+    --purple-dark: rgba(70, 47, 138, 1);
     --blue: rgba(110, 82, 255, 1);    
     --pink: rgba(252, 113, 255, 1);    
     --yellow: rgba(255, 187, 43, 1);    
     --mint: rgba(31, 215, 193, 1);    
     --green: rgba(72, 190, 72, 1);
+    --red: rgba(255, 70, 70, 1);    
 }
 
 
@@ -89,6 +91,10 @@ select:focus {
     background-color: var(--purple);
 }
 
+.purple-dark {
+    background-color: var(--purple-dark);
+}
+
 .blue {
     background-color: var(--blue);
 }
@@ -111,6 +117,10 @@ select:focus {
 
 .grey {
     background-color: var(--grey);
+}
+
+.red {
+    background-color: var(--red);
 }
 
 .cancel-btn .cancel-btn-img-blue {
