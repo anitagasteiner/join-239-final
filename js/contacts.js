@@ -24,8 +24,8 @@ function showContactList() {
     excerptContactListLetters();
     let contactListContent = document.getElementById('contactListContent');
     contactListContent.innerHTML = '';
-    for (i = 0; i < contactListLetters[0].length; i++) {
-        let contactListLetter = contactListLetters[0][i];
+    for (i = 0; i < contactListLetters.length; i++) {
+        let contactListLetter = contactListLetters[i];
         contactListContent.innerHTML += generateContactListHTML(contactListLetter);
     }
     showContactListContent();
@@ -36,16 +36,14 @@ function showContactList() {
  * This function is used to excerpt the initial letter of the first name of each contact, to sort out duplicates and push them into the array "contactListLetters" sorted from A to Z.
  */
 function excerptContactListLetters() {
+    usedLetters = [];
     for (i = 0; i < contacts.length; i++) {
-        let contact = contacts[i];
-        let contactName = contact['name'];
-        let firstInitial = contactName.charAt(0);
+        let firstInitial = contacts[i].name.charAt(0);
         let firstInitialUpper = firstInitial.toUpperCase();
         usedLetters.push(firstInitialUpper);
     }
     let usedLettersUnique = [...new Set(usedLetters)];
-    let usedLettersUniqueSorted = usedLettersUnique.sort();
-    contactListLetters.push(usedLettersUniqueSorted);
+    contactListLetters = usedLettersUnique.sort();
 }
 
 
