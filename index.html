@@ -26,13 +26,12 @@
     <div id="start-page-login" class="start-page">
         <div class="align-center">
             <div id="logo-container">
-            <img class="login-logo" src="./assets/img/join-logo.svg" alt="Logo" id="logo">
-            
-        </div>
-            <div class="not-a-user hide-on-mobile">
-                <span>Not a Join user?</span>
-                <div onclick="openSignup()" class="small-signup-btn btn-color clickable">Sign up</div>
+                <img class="login-logo" src="./assets/img/join-logo.svg" alt="Logo" id="logo">
             </div>
+        </div>
+        <div class="not-a-user hide-on-mobile">
+            <span>Not a Join user?</span>
+            <div onclick="openSignup()" class="small-signup-btn btn-color clickable">Sign up</div>
         </div>
         <div class="login-white-bg">
             <div class="login-headline">
@@ -47,8 +46,8 @@
                         class="right-password-box"></div>
                 </div>
                 <div class="d-none" id="wrongPassword">
-                <span>Wrong password Ups! Try again.</span>
-            </div>
+                    <span>Wrong password Ups! Try again.</span>
+                </div>
             </form>
             <div  class="remember-me" onclick="handleCheckBoxRememberMe()">
                 <img class="clickable" id="rememberMe" src="./assets/img/checkbox.svg" alt="Remember me checkbox">
@@ -69,6 +68,7 @@
             <div onclick="openLegalNotice()" class="login-links clickable">Legal Notice</div>
         </div>
     </div>
+
     <div id="signup-startpage" class="d-none">
         <div class="align-center">
             <img class="join-logo-login-signup" src="./assets/img/join-logo.svg" alt="Logo">
@@ -116,8 +116,11 @@
             <div onclick="openLegalNotice()" class="login-links clickable">Legal Notice</div>
         </div>
     </div>
+
     <div class="successfully-signup" id="successfullSignup">
         <span>You signed up successfully</span>
     </div>
+
 </body>
+
 </html>
