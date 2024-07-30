@@ -93,12 +93,13 @@ onAuthStateChanged(auth, async (user) => {
  * 
  * @function triggerLocationBasedActions
  */
-function triggerLocationBasedActions() {
+async function triggerLocationBasedActions() {
     removeFooterLinkLock();
     if (window.location.pathname == '/index.html') {
         window.location.href = "./summary.html";
     }
     if (window.location.pathname == '/contacts.html') {
+        contacts = await getData(endpointContacts);
         showContactList();
     }
 }
